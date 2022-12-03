@@ -3,13 +3,22 @@
  */
 package com.zanyx.advent
 
-class App {
-    val greeting: String
-        get() {
-            return "Hello World!"
-        }
-}
+import java.io.File
 
 fun main() {
-    println(App().greeting)
+    val elfsCalories = File("input.txt").reader().useLines { lines ->
+        buildList {
+            var calories = 0L
+            lines.forEach { line ->
+                if (line.isEmpty()) {
+                    add(calories)
+                    calories = 0L
+                } else {
+                    calories += line.toLong()
+                }
+            }
+            add(calories)
+        }
+    }
+    println(elfsCalories.maxOrNull())
 }
