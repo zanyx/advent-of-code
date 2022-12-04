@@ -4,15 +4,14 @@ class Game(private val rounds: List<Round>) {
 
     fun resolve(): Int {
         return rounds.sumOf { round ->
-            val resultScore = roundResult(round).let {
-                when (it) {
+            val resultScore =
+                when (round.expectedResult) {
                     RoundResult.Win -> 6
-                    RoundResult.Lost -> 0
+                    RoundResult.Lose -> 0
                     RoundResult.Draw -> 3
                 }
-            }
             val shapeScore =
-                when (round.playerShape) {
+                when (playerShape(round)) {
                     HandShape.Rock -> 1
                     HandShape.Paper -> 2
                     HandShape.Scissor -> 3
@@ -21,26 +20,21 @@ class Game(private val rounds: List<Round>) {
         }
     }
 
-    private fun roundResult(round: Round): RoundResult {
-        return with(round) {
-            when {
-                (playerShape == HandShape.Paper && opponentShape == HandShape.Rock) ||
-                (playerShape == HandShape.Rock && opponentShape == HandShape.Scissor) ||
-                (playerShape == HandShape.Scissor && opponentShape == HandShape.Paper) ->
-                    RoundResult.Win
-                (playerShape == HandShape.Paper && opponentShape == HandShape.Scissor) ||
-                (playerShape == HandShape.Rock && opponentShape == HandShape.Paper) ||
-                (playerShape == HandShape.Scissor && opponentShape == HandShape.Rock) ->
-                    RoundResult.Lost
-                else ->
-                    RoundResult.Draw
-            }
+    private fun playerShape(round: Round): HandShape {
+        return when (round.expectedResult) {
+            RoundResult.Win ->
+                when (round.opponentShape) {
+                    HandShape.Paper -> HandShape.Scissor
+                    HandShape.Rock -> HandShape.Paper
+                    HandShape.Scissor -> HandShape.Rock
+                }
+            RoundResult.Lose ->
+                when (round.opponentShape) {
+                    HandShape.Paper -> HandShape.Rock
+                    HandShape.Rock -> HandShape.Scissor
+                    HandShape.Scissor -> HandShape.Paper
+                }
+            RoundResult.Draw -> round.opponentShape
         }
-    }
-
-    private enum class RoundResult {
-        Win,
-        Lost,
-        Draw,
     }
 }

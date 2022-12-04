@@ -8,11 +8,11 @@ class GameTest {
     @Test fun `verify game score`() {
         val game = Game(
             rounds = listOf(
-                Round(playerShape = HandShape.Paper, opponentShape = HandShape.Rock),
-                Round(playerShape = HandShape.Rock, opponentShape = HandShape.Paper),
-                Round(playerShape = HandShape.Scissor, opponentShape = HandShape.Scissor),
+                Round(expectedResult = RoundResult.Draw, opponentShape = HandShape.Rock),
+                Round(expectedResult = RoundResult.Lose, opponentShape = HandShape.Paper),
+                Round(expectedResult = RoundResult.Win, opponentShape = HandShape.Scissor),
             )
         )
-        assertEquals(15, game.resolve(), "Unexpected game score")
+        assertEquals(12, game.resolve(), "Unexpected game score")
     }
 }
