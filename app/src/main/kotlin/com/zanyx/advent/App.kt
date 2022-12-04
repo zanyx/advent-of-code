@@ -3,13 +3,9 @@
  */
 package com.zanyx.advent
 
-class App {
-    val greeting: String
-        get() {
-            return "Hello World!"
-        }
-}
+import java.io.File
 
 fun main() {
-    println(App().greeting)
+    val game = Game(rounds = GameRoundsParser.parse(File("input.txt").readLines()))
+    println("Player score is ${game.resolve()}")
 }
