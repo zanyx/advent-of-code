@@ -3,10 +3,13 @@ package com.zanyx.advent
 import java.io.File
 
 fun main() {
-    val findDuplicateItem = FindDuplicateItem()
     val getItemPriority = GetItemPriority()
-    val duplicatePriorities = File("input.txt").readLines().map { rucksackItems ->
-        getItemPriority(item = findDuplicateItem(rucksackItems))
-    }
-    println("${duplicatePriorities.sum()}")
+    val findBadge = FindBadge()
+    val badgePriorities = File("input.txt").readLines()
+        .chunked(3)
+        .map { groupRucksackItems ->
+            val badge = findBadge(groupRucksackItems)
+            getItemPriority(badge)
+        }
+    println("${badgePriorities.sum()}")
 }
