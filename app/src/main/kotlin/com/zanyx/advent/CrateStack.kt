@@ -4,13 +4,16 @@ class CrateStack(vararg elements: Char) {
 
     private val _elements: MutableList<Char> = elements.toMutableList()
 
-    fun push(vararg elements: Char) {
-        _elements.addAll(0, elements.asList())
+    fun push(elements: List<Char>) {
+        _elements.addAll(0, elements)
     }
 
-    fun pop(): Char {
-        return _elements.removeFirstOrNull()
-            ?: throw IllegalStateException("Stack is empty")
+    fun pop(count: Int): List<Char> {
+        return _elements.take(count).also {
+            for (i in 0 until count) {
+                _elements.removeFirst()
+            }
+        }
     }
 
     fun top(): Char = _elements.first()

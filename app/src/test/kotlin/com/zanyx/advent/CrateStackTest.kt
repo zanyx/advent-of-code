@@ -1,26 +1,33 @@
 package com.zanyx.advent
 
 import kotlin.test.Test
-import kotlin.test.assertEquals
+import kotlin.test.assertContentEquals
 import kotlin.test.assertTrue
 
 class CrateStackTest {
 
     @Test fun `verify pop removes element`() {
         val crateStack = CrateStack('A')
-        assertEquals('A', crateStack.pop())
-        assertTrue(crateStack.isEmpty())
+        assertContentEquals(
+            expected = listOf('A'),
+            actual = crateStack.pop(1)
+        )
+        assertTrue(crateStack.isEmpty(), message = "Stack is not empty ($crateStack)")
     }
 
     @Test fun `verify elements order`() {
         val crateStack = CrateStack('A', 'B')
-        assertEquals('A', crateStack.pop())
-        assertEquals('B', crateStack.pop())
+        assertContentEquals(
+            expected = listOf('A', 'B'),
+            actual = crateStack.pop(2)
+        )
     }
 
     @Test fun `verify push elements order`() {
-        val crateStack = CrateStack('B').also { it.push('A') }
-        assertEquals('A', crateStack.pop())
-        assertEquals('B', crateStack.pop())
+        val crateStack = CrateStack('B').also { it.push(listOf('A')) }
+        assertContentEquals(
+            expected = listOf('A', 'B'),
+            actual = crateStack.pop(2)
+        )
     }
 }

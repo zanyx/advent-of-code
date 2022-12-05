@@ -11,7 +11,8 @@ object CrateStacksParser {
         return List(positions.count()) { CrateStack() }.also { stacks ->
             input.asReversed().drop(1).forEach { line ->
                 Regex("""\[([A-Z]+)]""").findAll(line).forEach { match ->
-                    stacks[positions.getValue(match.range)].push(match.groupValues[1].first())
+                    stacks[positions.getValue(match.range)]
+                        .push(listOf(match.groupValues[1].first()))
                 }
             }
         }

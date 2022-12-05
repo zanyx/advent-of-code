@@ -5,9 +5,8 @@ import java.io.File
 fun main() {
     val (crateStacks, cargoMoves) = InputRulesParser.parse(File("input.txt").readLines())
     cargoMoves.forEach { move ->
-        for (i in 0 until move.moveElementsCount) {
-            crateStacks[move.destinationStack - 1].push(crateStacks[move.sourceStack - 1].pop())
-        }
+        val cratesToMove = crateStacks[move.sourceStack - 1].pop(move.moveElementsCount)
+        crateStacks[move.destinationStack - 1].push(cratesToMove)
     }
     println(crateStacks.map { it.top() }.joinToString(separator = ""))
 }
