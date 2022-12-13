@@ -1,22 +1,20 @@
 package com.zanyx.advent
 
+import java.util.ArrayDeque
+
 class CrateStack(vararg elements: Char) {
 
-    private val _elements: MutableList<Char> = elements.toMutableList()
+    private val _elements = ArrayDeque(elements.asList())
 
     fun push(elements: List<Char>) {
-        _elements.addAll(0, elements)
+        elements.forEach { _elements.push(it) }
     }
 
     fun pop(count: Int): List<Char> {
-        return _elements.take(count).also {
-            for (i in 0 until count) {
-                _elements.removeFirst()
-            }
-        }
+        return (0 until count).map { _elements.pop() }
     }
 
-    fun top(): Char = _elements.first()
+    fun top(): Char = _elements.peek()
 
     fun isEmpty(): Boolean = _elements.isEmpty()
 
@@ -29,6 +27,6 @@ class CrateStack(vararg elements: Char) {
     }
 
     override fun toString(): String {
-        return _elements.asReversed().joinToString(separator = " ") { "[$it]" }
+        return _elements.joinToString(separator = " ") { "[$it]" }
     }
 }
