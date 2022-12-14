@@ -3,13 +3,11 @@
  */
 package com.zanyx.advent
 
-class App {
-    val greeting: String
-        get() {
-            return "Hello World!"
-        }
-}
+import java.io.File
 
 fun main() {
-    println(App().greeting)
+    val findMessageStartMarker = FindMessageStartMarker()
+    findMessageStartMarker(File("input.txt").inputStream())?.let {
+        println(it)
+    }
 }
