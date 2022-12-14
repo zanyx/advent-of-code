@@ -10,7 +10,7 @@ class FindMessageStartMarker {
             val marker = mutableListOf<Char>()
             var readChars = 0
             var nextChar = reader.readChar()
-            while (nextChar != null && marker.size != 4) {
+            while (nextChar != null && marker.size != 14) {
                 readChars += 1
                 val charPosition = marker.indexOf(nextChar)
                 if (charPosition != -1) {
@@ -21,7 +21,7 @@ class FindMessageStartMarker {
                 marker.add(nextChar)
                 nextChar = reader.readChar()
             }
-            readChars.takeIf { marker.size == 4 }?.let {
+            readChars.takeIf { marker.size == 14 }?.let {
                 Marker(value = String(marker.toCharArray()), position = it)
             }
         }

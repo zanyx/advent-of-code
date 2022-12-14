@@ -9,11 +9,11 @@ class FindMessageStartMarkerTest {
 
     @Test fun `verify marker position when available in the stream`() {
         listOf(
-            "mjqjpqmgbljsphdztnvjfqwrcgsmlb" to Marker("jpqm", 7),
-            "bvwbjplbgvbhsrlpgdmjqwftvncz" to Marker("vwbj", 5),
-            "nppdvjthqldpwncqszvftbrmjlhg" to Marker("pdvj", 6),
-            "nznrnfrfntjfmvfwmzdfjlvtqnbhcprsg" to Marker("rfnt", 10),
-            "zcfzfwzzqfrljwzlrfnpqdbhtmscgvjw" to Marker("zqfr", 11),
+            "mjqjpqmgbljsphdztnvjfqwrcgsmlb" to Marker("qmgbljsphdztnv", 19),
+            "bvwbjplbgvbhsrlpgdmjqwftvncz" to Marker("vbhsrlpgdmjqwf", 23),
+            "nppdvjthqldpwncqszvftbrmjlhg" to Marker("ldpwncqszvftbr", 23),
+            "nznrnfrfntjfmvfwmzdfjlvtqnbhcprsg" to Marker("wmzdfjlvtqnbhc", 29),
+            "zcfzfwzzqfrljwzlrfnpqdbhtmscgvjw" to Marker("jwzlrfnpqdbhtm", 26),
         ).forEach { (input, expectedMarker) ->
             assertEquals(
                 expectedMarker,
