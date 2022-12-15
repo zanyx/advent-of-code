@@ -3,13 +3,13 @@
  */
 package com.zanyx.advent
 
-class App {
-    val greeting: String
-        get() {
-            return "Hello World!"
-        }
-}
+import com.zanyx.advent.analyser.TerminalAnalyzer
+import com.zanyx.advent.terminal.Terminal
+import java.io.File
 
 fun main() {
-    println(App().greeting)
+    val fileSystemStructure =
+        TerminalAnalyzer(Terminal(stream = File("input.txt").bufferedReader()))
+            .discoverFileSystemStructure()
+    println(fileSystemStructure.directories.filter { it.size <= 100000 }.sumOf { it.size })
 }
