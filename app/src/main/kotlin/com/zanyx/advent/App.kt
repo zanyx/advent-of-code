@@ -7,5 +7,5 @@ import java.io.File
 
 fun main() {
     val grid = TreeGridParser.parse(File("input.txt").inputStream())
-    println(grid.flatten().count(Tree::isVisible))
+    println(grid.flatten().maxBy(Tree::score).also { println("Score: ${it.score()}") })
 }

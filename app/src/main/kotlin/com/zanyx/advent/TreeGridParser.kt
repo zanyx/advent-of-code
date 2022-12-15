@@ -11,27 +11,28 @@ object TreeGridParser {
                 val rowList = mutableListOf<Tree>()
                 line.forEachIndexed { col, charHeight ->
                     val height = charHeight.digitToInt()
-                    val leftTallestNeighbour = if (col == 0) {
+                    val leftCoveringTree = if (col == 0) {
                         null
                     } else {
-                        val neighbour = rowList[col - 1]
-                        neighbour.tallest(neighbour.tallestNeighbours.left)
+                        rowList.slice(0 until col).lastOrNull { it.height >= height }
+                            ?: rowList.first()
                     }
-                    val topTallestNeighbour = if (row == 0) {
+                    val topCoveringTree = if (row == 0) {
                         null
                     } else {
-                        val neighbour =  treeGrid[row - 1][col]
-                        neighbour.tallest(neighbour.tallestNeighbours.top)
+                        (0 until row).map { treeGrid[it][col] }.lastOrNull {  it.height >= height }
+                            ?: treeGrid[0][col]
                     }
 
                     rowList.add(
                         Tree(
                             height,
-                            TallestNeighbours(
-                                left = leftTallestNeighbour,
-                                top = topTallestNeighbour,
+                            position = Tree.Position(x = row, y = col),
+                            visibilityBlockedBy = Neighbours(
+                                left = leftCoveringTree,
+                                top = topCoveringTree,
                                 right = null,
-                                bottom = null
+                                bottom = null,
                             )
                         )
                     )
@@ -44,22 +45,24 @@ object TreeGridParser {
             val treeRow = treeGrid[row]
             for (col in treeRow.indices.reversed()) {
                 treeRow[col].apply {
-                    val rightTallestNeighbour = if (col == treeRow.lastIndex) {
+                    val rightCoveringTree = if (col == treeRow.lastIndex) {
                         null
                     } else {
-                        val neighbour = treeRow[col + 1]
-                        neighbour.tallest(neighbour.tallestNeighbours.right)
+                        treeRow.slice((col + 1)..treeRow.lastIndex).firstOrNull {
+                            it.height >= height
+                        } ?: treeRow.last()
                     }
-                    val bottomTallestNeighbour = if (row == treeGrid.lastIndex) {
+                    val bottomCoveringTree = if (row == treeGrid.lastIndex) {
                         null
                     } else {
-                        val neighbour = treeGrid[row + 1][col]
-                        neighbour.tallest(neighbour.tallestNeighbours.bottom)
+                        ((row + 1)..treeGrid.lastIndex).map { treeGrid[it][col] }.firstOrNull {
+                            it.height >= height
+                        } ?: treeGrid.last()[col]
                     }
 
-                    tallestNeighbours = tallestNeighbours.copy(
-                        right = rightTallestNeighbour,
-                        bottom = bottomTallestNeighbour,
+                    visibilityBlockedBy = visibilityBlockedBy.copy(
+                        right = rightCoveringTree,
+                        bottom = bottomCoveringTree,
                     )
                 }
             }

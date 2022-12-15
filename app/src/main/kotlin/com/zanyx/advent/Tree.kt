@@ -2,24 +2,25 @@ package com.zanyx.advent
 
 data class Tree(
     val height: Int,
-    var tallestNeighbours: TallestNeighbours,
+    val position: Position,
+    var visibilityBlockedBy: Neighbours,
 ) {
 
-    fun tallest(other: Tree?): Tree =
-        other?.takeIf { it.height > height } ?: this
-
-    fun isVisible(): Boolean =
-        tallestNeighbours.left?.takeIf { it.height >= height } == null
-                || tallestNeighbours.top?.takeIf { it.height >= height } == null
-                || tallestNeighbours.right?.takeIf { it.height >= height } == null
-                || tallestNeighbours.bottom?.takeIf { it.height >= height } == null
+     fun score(): Int {
+        return (visibilityBlockedBy.left?.let { position.y - it.position.y } ?: 0) *
+                (visibilityBlockedBy.top?.let { position.x - it.position.x } ?: 0) *
+                (visibilityBlockedBy.right?.let { it.position.y - position.y } ?: 0) *
+                (visibilityBlockedBy.bottom?.let { it.position.x - position.x } ?: 0)
+    }
 
     override fun toString(): String {
-        return "$height (l=${tallestNeighbours.left?.height}, t=${tallestNeighbours.top?.height}, r=${tallestNeighbours.right?.height}, b=${tallestNeighbours.bottom?.height})"
+        return "$height (l=${visibilityBlockedBy.left?.height}, t=${visibilityBlockedBy.top?.height}, r=${visibilityBlockedBy.right?.height}, b=${visibilityBlockedBy.bottom?.height})"
     }
+
+    data class Position(val x: Int, val y: Int)
 }
 
-data class TallestNeighbours(
+data class Neighbours(
     val left: Tree?,
     val top: Tree?,
     val right: Tree?,
