@@ -8,8 +8,10 @@ import com.zanyx.advent.terminal.Terminal
 import java.io.File
 
 fun main() {
-    val fileSystemStructure =
+    val fileSystem =
         TerminalAnalyzer(Terminal(stream = File("input.txt").bufferedReader()))
             .discoverFileSystemStructure()
-    println(fileSystemStructure.directories.filter { it.size <= 100000 }.sumOf { it.size })
+    val freeSpace = 70000000L - fileSystem.root.size
+    val spaceToBeFreed = 30000000 - freeSpace
+    println(fileSystem.directories.map { it.size }.filter { it >= spaceToBeFreed }.min())
 }

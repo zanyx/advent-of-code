@@ -31,6 +31,7 @@ class TerminalAnalyzer(
                 nextCommand = it.nextCommand()
             }
             FileSystemStructure(
+                root = context.directories.getValue(Path.Root),
                 directories = context.directories.values.toList(),
                 files = context.files
             )

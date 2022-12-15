@@ -1,6 +1,7 @@
 package com.zanyx.advent
 
 data class FileSystemStructure(
+    val root: Directory,
     val directories: List<Directory>,
     val files: List<File>,
 )
